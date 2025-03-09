@@ -1,13 +1,12 @@
 <div class="grid grid-rows-1 md:grid-cols-12 h-screen bg-gray-100">
   <!-- Left Pane: Field Groups -->
   <aside class="col-span-12 md:col-span-3 bg-white shadow-md m-4 rounded-lg p-4">
-    <app-field-group-list></app-field-group-list>
+    <app-field-group-list (groupSelected)="onGroupSelected($event)"></app-field-group-list>
   </aside>
 
   <!-- Middle Pane: Form Builder -->
   <main class="col-span-12 md:col-span-6 p-4">
-    <h2 class="font-bold text-2xl mb-4">Form Builder</h2>
-    <p>This area uses the gray background of the website (no card).</p>
+   <app-middle-pane [selectedGroup]="selectedGroup"></app-middle-pane>
   </main>
 
   <!-- Right Pane: Elements Library -->
