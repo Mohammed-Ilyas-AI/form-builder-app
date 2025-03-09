@@ -11,7 +11,9 @@
 
   <!-- Right Pane: Elements Library -->
   <aside class="col-span-12 md:col-span-3 bg-white shadow-md m-4 rounded-lg p-4">
-    <h2 class="font-bold text-xl mb-2">Elements</h2>
-    <p>Content goes here...</p>
+    <app-element-list></app-element-list>
   </aside>
 </div>
+
+<!-- Right Drawer: Field Properties (Overlay or fixed on the right) -->
+<app-right-drawer [selectedElement]="selectedFormElement"></app-right-drawer>
