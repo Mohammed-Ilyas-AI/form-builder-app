@@ -1,12 +1,12 @@
 <div class="grid grid-rows-1 md:grid-cols-12 h-screen bg-gray-100">
   <!-- Left Pane: Field Groups -->
   <aside class="col-span-12 md:col-span-3 bg-white shadow-md m-4 rounded-lg p-4">
-    <app-field-group-list (groupSelected)="onGroupSelected($event)"></app-field-group-list>
+    <app-field-group-list (selectedFieldGroupChange)="onFieldGroupSelected($event)"></app-field-group-list>
   </aside>
 
   <!-- Middle Pane: Form Builder -->
   <main class="col-span-12 md:col-span-6 p-4">
-   <app-middle-pane [selectedGroup]="selectedGroup"></app-middle-pane>
+   <app-middle-pane  [selectedField]="selectedFieldGroup"></app-middle-pane>
   </main>
 
   <!-- Right Pane: Elements Library -->

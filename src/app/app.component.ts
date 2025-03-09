@@ -1,20 +1,21 @@
 import { Component } from '@angular/core';
 import { FieldGroupListComponent } from "./features/field-groups/field-group-list/field-group-list.component";
 import { MiddlePaneComponent } from "./features/form-builder/middle-pane/middle-pane.component";
+import { FieldGroup } from './models/field-group.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [FieldGroupListComponent, MiddlePaneComponent],
+  imports: [FieldGroupListComponent, MiddlePaneComponent, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'form-builder-app';
 
-  selectedGroup: { id: number; name: string; description: string } | null = null;
+  selectedFieldGroup: FieldGroup | null = null;
 
-  // This method will receive the emitted group from FieldGroupListComponent
-  onGroupSelected(group: { id: number; name: string; description: string }): void {
-    this.selectedGroup = group;
+  onFieldGroupSelected(group: FieldGroup) {
+    this.selectedFieldGroup = group;
   }
 }
