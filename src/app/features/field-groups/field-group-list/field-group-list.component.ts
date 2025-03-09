@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -10,6 +10,12 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './field-group-list.component.css',
 })
 export class FieldGroupListComponent {
+  @Output() groupSelected = new EventEmitter<{
+    id: number;
+    name: string;
+    description: string;
+  }>();
+
   defaultFieldGroups = [
     {
       id: 1,
@@ -55,8 +61,7 @@ export class FieldGroupListComponent {
     this.showCreateForm = false;
   }
 
-  selectFieldGroup(id: number): void {
-    console.log('Selected Field Group ID:', id);
-    // Integration with Middle Pane will be added later.
+  selectFieldGroup(group: { id: number; name: string; description: string }): void {
+    this.groupSelected.emit(group);
   }
 }

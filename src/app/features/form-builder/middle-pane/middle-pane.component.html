@@ -1,1 +1,50 @@
-<p>middle-pane works!</p>
+<div class="h-full bg-gray-100 p-4">
+  <!-- Show details if a field group is selected -->
+  <div *ngIf="selectedGroup; else noGroupSelected">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="font-bold text-2xl">{{ selectedGroup.name }}</h2>
+      <div class="flex space-x-4">
+        <!-- Edit Button -->
+        <button
+          (click)="editFieldGroup()"
+          title="Edit"
+          class="text-gray-500 hover:text-blue-500"
+        >
+          ✏️
+        </button>
+
+        <!-- Copy Button -->
+        <button
+          (click)="copyFieldGroup()"
+          title="Copy"
+          class="text-gray-500 hover:text-green-500"
+        >
+          📋
+        </button>
+
+        <!-- Delete Button -->
+        <button
+          (click)="deleteFieldGroup()"
+          title="Delete"
+          class="text-gray-500 hover:text-red-500"
+        >
+          🗑️
+        </button>
+      </div>
+    </div>
+
+    <p class="text-gray-600 mb-4">{{ selectedGroup.description }}</p>
+
+    <!-- Placeholder for additional functionality -->
+    <div class="bg-white p-4 rounded-lg shadow-md">
+      <p>Form builder details and functionality will go here...</p>
+    </div>
+  </div>
+
+  <!-- Fallback message if no group is selected -->
+  <ng-template #noGroupSelected>
+    <p class="text-gray-500 text-center">
+      Please select a field group to get started.
+    </p>
+  </ng-template>
+</div>
