@@ -1,47 +1,107 @@
 <div class="h-full bg-gray-100 p-4">
-  <!-- Show details if a field group is selected -->
-  <div *ngIf="selectedGroup; else noGroupSelected">
+  <!-- Selected Group Section -->
+  <div *ngIf="selectedGroup; else noGroupSelected" class="bg-white p-4 rounded-lg shadow-md mb-6">
+    <!-- Group Header -->
     <div class="flex justify-between items-center mb-4">
-      <h2 class="font-bold text-2xl">{{ selectedGroup.name }}</h2>
+      <!-- Editable Name -->
+      <div *ngIf="!editMode">
+        <h2 class="font-bold text-2xl">{{ selectedGroup.name }}</h2>
+      </div>
+      <div *ngIf="editMode">
+        <input
+          [(ngModel)]="selectedGroup.name"
+          type="text"
+          class="font-bold text-2xl border border-gray-300 p-2 rounded-lg w-full"
+        />
+      </div>
+
+      <!-- Action Buttons -->
       <div class="flex space-x-4">
-        <!-- Edit Button -->
+        <button (click)="toggleEditMode()" title="Edit" class="text-gray-500 hover:text-blue-500">✏️</button>
+        <button (click)="copyFieldGroup()" title="Copy" class="text-gray-500 hover:text-green-500">📋</button>
+        <button (click)="deleteFieldGroup()" title="Delete" class="text-gray-500 hover:text-red-500">🗑️</button>
+      </div>
+    </div>
+
+    <!-- Editable Description -->
+    <div *ngIf="editMode; else displayDescription">
+      <textarea
+        [(ngModel)]="selectedGroup.description"
+        class="border border-gray-300 p-2 rounded-lg w-full"
+        rows="3"
+      ></textarea>
+      <button
+        class="mt-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+        (click)="saveEdit()"
+      >
+        Save
+      </button>
+    </div>
+
+    <!-- Description Display -->
+    <ng-template #displayDescription>
+      <p class="text-gray-600 mb-4">{{ selectedGroup.description }}</p>
+    </ng-template>
+  </div>
+
+  <!-- Copied Field Groups Section -->
+  <h3 *ngIf="pastedFieldGroups.length > 0" class="font-bold text-lg mb-2">Copied Field Groups</h3>
+  <div *ngFor="let group of pastedFieldGroups" class="bg-white p-4 rounded-lg shadow-md mb-4">
+    <!-- Copied Group Header -->
+    <div class="flex justify-between items-center mb-4">
+      <!-- Editable Name -->
+      <div *ngIf="!group.editMode">
+        <h2 class="font-bold text-lg">{{ group.name }}</h2>
+      </div>
+      <div *ngIf="group.editMode">
+        <input
+          [(ngModel)]="group.name"
+          type="text"
+          class="font-bold text-lg border border-gray-300 p-2 rounded-lg w-full"
+        />
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex space-x-4">
         <button
-          (click)="editFieldGroup()"
-          title="Edit"
+          (click)="toggleEditCopiedGroup(group)"
           class="text-gray-500 hover:text-blue-500"
+          title="Edit"
         >
           ✏️
         </button>
-
-        <!-- Copy Button -->
         <button
-          (click)="copyFieldGroup()"
-          title="Copy"
-          class="text-gray-500 hover:text-green-500"
-        >
-          📋
-        </button>
-
-        <!-- Delete Button -->
-        <button
-          (click)="deleteFieldGroup()"
-          title="Delete"
+          (click)="deleteCopiedGroup(group)"
           class="text-gray-500 hover:text-red-500"
+          title="Delete"
         >
           🗑️
         </button>
       </div>
     </div>
 
-    <p class="text-gray-600 mb-4">{{ selectedGroup.description }}</p>
-
-    <!-- Placeholder for additional functionality -->
-    <div class="bg-white p-4 rounded-lg shadow-md">
-      <p>Form builder details and functionality will go here...</p>
+    <!-- Editable Description -->
+    <div *ngIf="group.editMode; else displayGroupDescription">
+      <textarea
+        [(ngModel)]="group.description"
+        class="border border-gray-300 p-2 rounded-lg w-full"
+        rows="3"
+      ></textarea>
+      <button
+        class="mt-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+        (click)="saveCopiedEdit(group)"
+      >
+        Save
+      </button>
     </div>
+
+    <!-- Group Description -->
+    <ng-template #displayGroupDescription>
+      <p class="text-gray-600">{{ group.description }}</p>
+    </ng-template>
   </div>
 
-  <!-- Fallback message if no group is selected -->
+  <!-- Fallback Message -->
   <ng-template #noGroupSelected>
     <p class="text-gray-500 text-center">
       Please select a field group to get started.
