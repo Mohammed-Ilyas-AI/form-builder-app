@@ -26,9 +26,12 @@ export class MiddlePaneComponent {
 
   editMode = false;
 
-  constructor(private fieldGroupService: FieldGroupService) {
+  constructor(private fieldGroupService: FieldGroupService) { }
+
+  ngOnInit(): void {
     this.pastedFieldGroups = this.fieldGroupService.getFieldGroups(); // Load stored groups
   }
+
 
   toggleEditMode(): void {
     this.editMode = !this.editMode;
@@ -37,18 +40,22 @@ export class MiddlePaneComponent {
   saveEdit(): void {
     this.editMode = false;
     if (this.selectedGroup) {
-      this.fieldGroupService.saveFieldGroups(this.pastedFieldGroups);
+      const index = this.pastedFieldGroups.findIndex(
+        (group) => group.id === this.selectedGroup!.id
+      );
+      if (index !== -1) {
+        this.pastedFieldGroups[index] = this.selectedGroup; // Update the group
+      }
+      this.fieldGroupService.saveFieldGroups(this.pastedFieldGroups); // Persist changes
     }
   }
 
   copyFieldGroup(): void {
     if (this.selectedGroup) {
-      const copiedGroup = {
-        ...this.selectedGroup,
-        id: new Date().getTime(), // Unique ID
-        name: `${this.selectedGroup.name} (Copy)`,
-        editMode: false, // Initialize editMode for the copied group
-      };
+      const copiedGroup = JSON.parse(JSON.stringify(this.selectedGroup)); // Deep copy
+      copiedGroup.id = new Date().getTime(); // Unique ID
+      copiedGroup.name = `${this.selectedGroup.name} (Copy)`;
+      copiedGroup.editMode = false;
       this.pastedFieldGroups.push(copiedGroup);
       this.fieldGroupService.saveFieldGroups(this.pastedFieldGroups); // Persist changes
     }
@@ -56,7 +63,10 @@ export class MiddlePaneComponent {
 
   deleteFieldGroup(): void {
     if (this.selectedGroup) {
-      this.selectedGroup = null;
+      this.pastedFieldGroups = this.pastedFieldGroups.filter(
+        (group) => group.id !== this.selectedGroup!.id
+      );
+      this.selectedGroup = null; // Clear selection
       this.fieldGroupService.saveFieldGroups(this.pastedFieldGroups); // Update storage
     }
   }

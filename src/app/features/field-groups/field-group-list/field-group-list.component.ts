@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { FieldGroupService } from '../../../core/field-group.service';
 
 @Component({
   selector: 'app-field-group-list',
@@ -8,37 +9,26 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule],
   templateUrl: './field-group-list.component.html',
   styleUrl: './field-group-list.component.css',
+
 })
 export class FieldGroupListComponent {
-  @Output() groupSelected = new EventEmitter<{
-    id: number;
-    name: string;
-    description: string;
-  }>();
+  @Output() groupSelected = new EventEmitter<{ id: number; name: string; description: string }>();
 
-  defaultFieldGroups = [
-    {
-      id: 1,
-      name: 'Personal Details',
-      description: 'Contains personal information fields.',
-    },
-    {
-      id: 2,
-      name: 'Contact Info',
-      description: 'Includes email and phone number fields.',
-    },
-    {
-      id: 3,
-      name: 'Work Experience',
-      description: 'Fields for job details and experience.',
-    },
-  ];
-
-  newlyCreatedGroups: Array<{ id: number; name: string; description: string }> =
-    [];
+  defaultFieldGroups: Array<{ id: number; name: string; description: string }> = [];
+  newlyCreatedGroups: Array<{ id: number; name: string; description: string }> = [];
   showCreateForm = false;
-
   newGroup = { name: '', description: '' };
+
+  constructor(private fieldGroupService: FieldGroupService) {}
+
+  ngOnInit(): void {
+    // Load field groups from local storage on initialization
+    this.defaultFieldGroups = this.fieldGroupService.getFieldGroups();
+  }
+
+  selectFieldGroup(group: { id: number; name: string; description: string }): void {
+    this.groupSelected.emit(group);
+  }
 
   toggleCreateForm(): void {
     this.showCreateForm = !this.showCreateForm;
@@ -46,13 +36,12 @@ export class FieldGroupListComponent {
 
   createFieldGroup(): void {
     if (this.newGroup.name.trim() && this.newGroup.description.trim()) {
-      const newGroupId =
-        this.defaultFieldGroups.length + this.newlyCreatedGroups.length + 1;
-      this.newlyCreatedGroups.push({ id: newGroupId, ...this.newGroup });
+      const newGroupId = new Date().getTime(); // Generate unique ID
+      const newGroup = { id: newGroupId, ...this.newGroup };
+      this.fieldGroupService.addFieldGroup(newGroup); // Persist to local storage
+      this.defaultFieldGroups = this.fieldGroupService.getFieldGroups(); // Reload field groups
       this.newGroup = { name: '', description: '' };
       this.showCreateForm = false;
-    } else {
-      alert('Please fill in both Name and Description.');
     }
   }
 
@@ -61,7 +50,8 @@ export class FieldGroupListComponent {
     this.showCreateForm = false;
   }
 
-  selectFieldGroup(group: { id: number; name: string; description: string }): void {
-    this.groupSelected.emit(group);
+  deleteFieldGroup(groupId: number): void {
+    this.fieldGroupService.deleteFieldGroup(groupId); // Remove from local storage
+    this.defaultFieldGroups = this.fieldGroupService.getFieldGroups(); // Reload field groups
   }
 }
