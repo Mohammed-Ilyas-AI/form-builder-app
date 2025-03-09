@@ -1,1 +1,60 @@
-<p>field-group-list works!</p>
+<div class="h-full flex flex-col">
+  <!-- Header with Field Groups Title and Create Button -->
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="font-bold text-xl">Field Groups</h2>
+    <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600" (click)="toggleCreateForm()">
+      + Create New
+    </button>
+  </div>
+
+  <!-- Scrollable Content -->
+  <div class="flex-1 overflow-y-auto">
+    <!-- Default Field Groups Heading -->
+    <h3 class="font-semibold text-gray-800 text-sm mb-2">Default Field Groups</h3>
+    <ul>
+      <li *ngFor="let group of defaultFieldGroups" (click)="selectFieldGroup(group.id)"
+        class="bg-gray-50 border border-gray-200 p-4 mb-2 rounded-lg cursor-pointer hover:bg-gray-100 flex items-center">
+        <div>
+          <h3 class="font-semibold">{{ group.name }}</h3>
+          <p class="text-sm text-gray-600">{{ group.description }}</p>
+        </div>
+      </li>
+    </ul>
+
+    <!-- Newly Created Field Groups -->
+    <h3 *ngIf="newlyCreatedGroups.length > 0" class="font-semibold text-gray-800 text-sm mt-6 mb-2">
+      Newly Created
+    </h3>
+    <ul>
+      <li *ngFor="let group of newlyCreatedGroups" (click)="selectFieldGroup(group.id)"
+        class="bg-gray-50 border border-gray-200 p-4 mb-2 rounded-lg cursor-pointer hover:bg-gray-100 flex items-center">
+        <div>
+          <h3 class="font-semibold">{{ group.name }}</h3>
+          <p class="text-sm text-gray-600">{{ group.description }}</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Inline Create Form -->
+  <div *ngIf="showCreateForm" class="bg-white shadow-md p-4 rounded-lg border border-gray-200 mt-4">
+    <h3 class="font-bold text-lg mb-2">Create Field Group</h3>
+    <label class="block mb-2">
+      <span class="text-sm font-medium">Name</span>
+      <input type="text" [(ngModel)]="newGroup.name" class="block w-full p-2 border border-gray-300 rounded-md" />
+    </label>
+    <label class="block mb-4">
+      <span class="text-sm font-medium">Description</span>
+      <textarea [(ngModel)]="newGroup.description"
+        class="block w-full p-2 border border-gray-300 rounded-md"></textarea>
+    </label>
+    <div class="flex justify-end space-x-2">
+      <button class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600" (click)="cancelCreateForm()">
+        Cancel
+      </button>
+      <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600" (click)="createFieldGroup()">
+        Create
+      </button>
+    </div>
+  </div>
+</div>
