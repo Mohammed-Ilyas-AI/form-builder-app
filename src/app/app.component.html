@@ -1,19 +1,19 @@
-<div class="grid grid-cols-1 md:grid-cols-3 h-screen">
+<div class="grid grid-rows-1 md:grid-cols-12 h-screen bg-gray-100">
   <!-- Left Pane: Field Groups -->
-  <aside class="col-span-1 bg-gray-100 p-4">
-    <h2 class="font-bold text-xl">Field Groups</h2>
-    <router-outlet name="field-groups"></router-outlet>
+  <aside class="col-span-12 md:col-span-3 bg-white shadow-md m-4 rounded-lg p-4">
+    <h2 class="font-bold text-xl mb-2">Field Groups</h2>
+    <p>Content goes here...</p>
   </aside>
 
   <!-- Middle Pane: Form Builder -->
-  <main class="col-span-2 md:col-span-1 bg-white p-4">
-    <h2 class="font-bold text-xl">Form Builder</h2>
-    <router-outlet name="form-builder"></router-outlet>
+  <main class="col-span-12 md:col-span-6 p-4">
+    <h2 class="font-bold text-2xl mb-4">Form Builder</h2>
+    <p>This area uses the gray background of the website (no card).</p>
   </main>
 
   <!-- Right Pane: Elements Library -->
-  <aside class="col-span-1 bg-gray-100 p-4">
-    <h2 class="font-bold text-xl">Elements</h2>
-    <router-outlet name="form-elements"></router-outlet>
+  <aside class="col-span-12 md:col-span-3 bg-white shadow-md m-4 rounded-lg p-4">
+    <h2 class="font-bold text-xl mb-2">Elements</h2>
+    <p>Content goes here...</p>
   </aside>
 </div>
