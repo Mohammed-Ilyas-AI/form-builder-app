@@ -33,7 +33,6 @@ export class MiddlePaneComponent implements OnInit {
   ngOnInit(): void {
     this.initializeForm();
 
-    // Load only header data; DO NOT auto-load elements
     this.storageService.selectedFieldGroup$.subscribe((group: FieldGroup | null) => {
       if (!group) return;
 
@@ -46,8 +45,6 @@ export class MiddlePaneComponent implements OnInit {
 
       this.fieldGroups.clear();
       this.fieldGroups.push(headerGroup);
-
-      // formFields are left as-is — NO SYNCING to group.elements[]
     });
   }
 
@@ -140,7 +137,6 @@ export class MiddlePaneComponent implements OnInit {
       ...this.selectedGroup,
       name: header.title,
       description: header.description,
-      elements: this.formFields.value
     };
     this.storageService.updateSelectedFieldGroup(updatedGroup);
     alert('Form saved successfully ✅');

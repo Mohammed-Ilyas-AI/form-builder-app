@@ -14,9 +14,8 @@ describe('LocalStorageService', () => {
       name: 'Group 1',
       description: 'Desc',
       type: 'default',
-      elements: [],
     },
-    { id: 2, name: 'Group 2', description: '', type: 'default', elements: [] },
+    { id: 2, name: 'Group 2', description: '', type: 'default' },
   ];
 
   beforeEach(() => {

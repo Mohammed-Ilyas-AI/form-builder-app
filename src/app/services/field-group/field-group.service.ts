@@ -5,10 +5,10 @@ import { FieldGroup } from '../../models/field-group';
 @Injectable({ providedIn: 'root' })
 export class FieldGroupService {
   private defaultGroups: FieldGroup[] = [
-    { id: 1, name: 'AMC Reports', description: 'Report details', elements: [], type: 'default' },
-    { id: 2, name: 'HVAC Repair', description: 'HVAC service details', elements: [], type: 'default' },
-    { id: 3, name: 'Electrical Inspection', description: 'Inspection details', elements: [], type: 'default' },
-    { id: 4, name: 'Plumbing Checklist', description: 'Checklist for plumbing', elements: [], type: 'default' }
+    { id: 1, name: 'AMC Reports', description: 'Report details', type: 'default' },
+    { id: 2, name: 'HVAC Repair', description: 'HVAC service details', type: 'default' },
+    { id: 3, name: 'Electrical Inspection', description: 'Inspection details', type: 'default' },
+    { id: 4, name: 'Plumbing Checklist', description: 'Checklist for plumbing', type: 'default' }
   ];
 
   private fieldGroupsSubject = new BehaviorSubject<FieldGroup[]>([...this.defaultGroups]);

@@ -15,7 +15,6 @@ describe('MiddlePaneComponent', () => {
     name: 'Test Group',
     description: 'Test Description',
     type: 'default',
-    elements: []
   };
 
   beforeEach(async () => {

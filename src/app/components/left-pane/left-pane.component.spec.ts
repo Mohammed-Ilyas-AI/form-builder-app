@@ -17,9 +17,9 @@ describe('LeftPaneComponent', () => {
 
   beforeEach(async () => {
     const mockFieldGroups: FieldGroup[] = [
-      { id: 1, name: 'AMC Reports', description: 'Report details', elements: [], type: 'default' },
-      { id: 2, name: 'HVAC Repair', description: 'HVAC service details', elements: [], type: 'created' },
-      { id: 3, name: 'Electrical Inspection', description: 'Inspection details', elements: [], type: 'copied' }
+      { id: 1, name: 'AMC Reports', description: 'Report details', type: 'default' },
+      { id: 2, name: 'HVAC Repair', description: 'HVAC service details', type: 'created' },
+      { id: 3, name: 'Electrical Inspection', description: 'Inspection details', type: 'copied' }
     ];
 
     mockFieldGroups$ = new BehaviorSubject<FieldGroup[]>(mockFieldGroups);
@@ -61,15 +61,15 @@ describe('LeftPaneComponent', () => {
   });
 
   it('should select a field group and notify the storage service', () => {
-    const mockGroup: FieldGroup = { id: 1, name: 'Test Group', description: 'Desc', elements: [], type: 'default' };
+    const mockGroup: FieldGroup = { id: 1, name: 'Test Group', description: 'Desc', type: 'default' };
     component.selectFieldGroup(mockGroup);
     expect(storageService.setSelectedFieldGroup).toHaveBeenCalledWith(mockGroup);
   });
 
   it('should reorder field groups correctly within a category', () => {
     component.createdFieldGroups = [
-      { id: 1, name: 'Group A', description: 'Desc A', elements: [], type: 'created' },
-      { id: 2, name: 'Group B', description: 'Desc B', elements: [], type: 'created' }
+      { id: 1, name: 'Group A', description: 'Desc A', type: 'created' },
+      { id: 2, name: 'Group B', description: 'Desc B', type: 'created' }
     ];
 
     const event = { previousIndex: 0, currentIndex: 1 } as any;
@@ -80,7 +80,7 @@ describe('LeftPaneComponent', () => {
   });
 
   it('should highlight the selected field group', () => {
-    const mockGroup: FieldGroup = { id: 2, name: 'HVAC Repair', description: 'Desc', elements: [], type: 'created' };
+    const mockGroup: FieldGroup = { id: 2, name: 'HVAC Repair', description: 'Desc', type: 'created' };
     mockSelectedFieldGroup$.next(mockGroup);
     fixture.detectChanges();
     expect(component.selectedGroupId).toBe(mockGroup.id);
