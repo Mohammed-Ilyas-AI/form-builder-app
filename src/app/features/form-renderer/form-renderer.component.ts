@@ -1,33 +1,29 @@
-import { DragDropModule } from '@angular/cdk/drag-drop';
-import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-form-renderer',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, DragDropModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './form-renderer.component.html',
-  styleUrl: './form-renderer.component.css',
+  styleUrls: ['./form-renderer.component.css'],
 })
 export class FormRendererComponent {
-  @Input() formFields!: FormArray;
+  @Input() field!: any;
+  @Output() editField = new EventEmitter<any>();
+  @Output() copyField = new EventEmitter<any>();
+  @Output() deleteField = new EventEmitter<string>();
 
-  @Output() edit = new EventEmitter<number>();
-  @Output() copy = new EventEmitter<number>();
-  @Output() delete = new EventEmitter<number>();
-  @Output() fileChange = new EventEmitter<{ fileEvent: Event; index: number }>();
-  @Output() checkboxChange = new EventEmitter<{ event: Event; index: number }>();
-
-  onFileChange(event: Event, index: number) {
-    this.fileChange.emit({ fileEvent: event, index });
+  onEdit(): void {
+    this.editField.emit(this.field);
   }
 
-  onCheckboxChange(event: Event, index: number) {
-    this.checkboxChange.emit({ event, index });
+  onCopy(): void {
+    this.copyField.emit(this.field);
   }
 
-  getFieldGroup(index: number): FormGroup {
-    return this.formFields.at(index) as FormGroup;
+  onDelete(): void {
+    this.deleteField.emit(this.field.id);
   }
 }

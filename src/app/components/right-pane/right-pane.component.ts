@@ -25,8 +25,8 @@ export class RightPaneComponent implements OnInit{
     return this.formElementService.filterCategories(this.searchQuery);
   }
 
-  // Optional: Drag start event if you want to use DragDrop API
-  onDragStart(event: DragEvent, element: any) {
-    event.dataTransfer?.setData('formElement', JSON.stringify(element));
+  // Native dragstart event: set dataTransfer with the element's JSON.
+  onDragStart(event: DragEvent, element: any): void {
+    event.dataTransfer?.setData("text/plain", JSON.stringify(element));
   }
 }
