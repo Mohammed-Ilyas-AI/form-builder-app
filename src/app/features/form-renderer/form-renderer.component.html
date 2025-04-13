@@ -1,1 +1,40 @@
-<p>form-renderer works!</p>
+<div *ngFor="let _ of formFields.controls; let i = index" [formGroup]="getFieldGroup(i)">
+  <div class="bg-white border border-gray-300 p-4 rounded-lg shadow mb-4 relative">
+    <div class="absolute top-2 right-2 flex gap-2">
+      <button type="button" (click)="edit.emit(i)" class="text-blue-600 hover:text-blue-800"
+        title="Edit">
+        <i class="fas fa-pencil-alt"></i>
+      </button>
+      <button type="button" (click)="copy.emit(i)" class="text-indigo-500 hover:text-indigo-700" title="Copy">
+        <i class="fas fa-copy"></i>
+      </button>
+      <button type="button" (click)="delete.emit(i)" class="text-red-500 hover:text-red-700" title="Delete">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+
+    <label class="block text-sm font-medium text-gray-700 mb-1">
+      {{ getFieldGroup(i).get('label')?.value }}
+      <span *ngIf="getFieldGroup(i).get('required')?.value" class="text-red-500">*</span>
+    </label>
+
+    <ng-container [ngSwitch]="getFieldGroup(i).get('type')?.value">
+      <input *ngSwitchCase="'text'" type="text" class="form-input" formControlName="value" />
+      <input *ngSwitchCase="'number'" type="number" class="form-input" formControlName="value" />
+      <textarea *ngSwitchCase="'textarea'" class="form-textarea" formControlName="value"></textarea>
+      <select *ngSwitchCase="'dropdown'" class="form-select" formControlName="value">
+        <option *ngFor="let option of getFieldGroup(i).get('options')?.value" [value]="option">
+          {{ option }}
+        </option>
+      </select>
+      <input *ngSwitchCase="'file'" type="file" class="form-input" (change)="onFileChange($event, i)" />
+      <input *ngSwitchCase="'date'" type="date" class="form-input" formControlName="value" />
+      <input *ngSwitchCase="'time'" type="time" class="form-input" formControlName="value" />
+      <div *ngSwitchCase="'checkbox'" class="flex items-center space-x-2">
+        <input type="checkbox" class="form-checkbox" formControlName="value" (change)="onCheckboxChange($event, i)" />
+        <label class="text-sm text-gray-700">Check</label>
+      </div>
+      <input *ngSwitchDefault type="text" class="form-input" formControlName="value" />
+    </ng-container>
+  </div>
+</div>
