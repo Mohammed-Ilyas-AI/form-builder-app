@@ -12,24 +12,27 @@
       <i class="fas fa-search absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-400 text-sm"></i>
     </div>
   </div>
-
   <!-- Scrollable Content -->
   <div class="mt-4 overflow-y-auto max-h-[calc(100vh-120px)] pr-1">
+    <!-- List through each category -->
     <div *ngFor="let category of filteredCategories" class="mb-6">
-      <h4 class="text-[10px] font-semibold text-gray-500 uppercase mb-2">{{ category.category }}</h4>
-
+      <h4 class="text-[10px] font-semibold text-gray-500 uppercase mb-2">
+        {{ category.category }}
+      </h4>
+      <!-- Each element is now natively draggable -->
       <div class="grid gap-2">
         <div
-          class="flex items-start gap-3 p-3 rounded-md hover:bg-gray-50 cursor-pointer transition border border-transparent hover:border-gray-200"
           *ngFor="let element of category.fields"
           draggable="true"
           (dragstart)="onDragStart($event, element)"
+          class="flex items-start gap-3 p-3 rounded-md cursor-pointer transition border border-transparent hover:border-gray-200"
         >
           <i [class]="element.icon + ' text-gray-500 text-lg pt-1'"></i>
           <div>
-            <div class="text-sm font-medium text-gray-800 leading-4">{{ element.label }}</div>
+            <div class="text-sm font-medium text-gray-800 leading-4">
+              {{ element.label }}
+            </div>
             <div class="text-xs text-gray-500 mt-1">
-              <!-- Optional short description if needed -->
               {{ element.type }}
             </div>
           </div>
