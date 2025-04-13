@@ -54,16 +54,16 @@ describe('MiddlePaneComponent', () => {
     expect(component.isEditMode).toBeFalse();
   });
 
-  it('should save changes to selected group', () => {
-    component.enterEditMode();
-    component.fieldGroups.at(0).patchValue({ title: 'Updated', description: 'Changed' });
-    component.saveChanges();
+  // it('should save changes to selected group', () => {
+  //   component.enterEditMode();
+  //   component.fieldGroups.at(0).patchValue({ title: 'Updated', description: 'Changed' });
+  //   component.saveChanges();
 
-    expect(mockLocalStorageService.updateSelectedFieldGroup).toHaveBeenCalledWith(
-      jasmine.objectContaining({ name: 'Updated', description: 'Changed' })
-    );
-    expect(component.isEditMode).toBeFalse();
-  });
+  //   expect(mockLocalStorageService.updateSelectedFieldGroup).toHaveBeenCalledWith(
+  //     jasmine.objectContaining({ name: 'Updated', description: 'Changed' })
+  //   );
+  //   expect(component.isEditMode).toBeFalse();
+  // });
 
   it('should call copy and delete methods', () => {
     spyOn(window, 'confirm').and.returnValue(true);

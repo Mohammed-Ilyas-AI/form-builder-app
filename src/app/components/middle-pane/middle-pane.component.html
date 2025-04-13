@@ -1,66 +1,92 @@
-<div class="p-4">
+<div class="p-4 h-[96vh] max-h-[100vh] overflow-y-auto scrollbar-hide" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
   <form [formGroup]="form">
-    <div *ngIf="selectedGroup" class="bg-white shadow rounded-lg p-4 flex flex-col space-y-2">
-      <div class="flex justify-between items-start flex-wrap gap-4" formArrayName="fieldGroups">
-        <!-- Field Group Form -->
+
+    <!-- ✅ HEADER SECTION -->
+    <div *ngIf="selectedGroup" class="flex flex-col space-y-6">
+      <div class="bg-white shadow rounded-lg p-4 flex justify-between items-start flex-wrap gap-4 mb-2"
+        formArrayName="fieldGroups">
+
         <div class="flex flex-col gap-2 max-w-md w-full" [formGroupName]="0">
-          <!-- Title -->
           <ng-container *ngIf="!isEditMode; else editTitle">
             <span class="font-semibold text-gray-900 text-lg">
               {{ fieldGroups.at(0).get('title')?.value }}
             </span>
           </ng-container>
           <ng-template #editTitle>
-            <input
-              type="text"
-              formControlName="title"
-              class="border border-gray-300 px-3 py-2 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 max-w-sm w-full"
+            <input type="text" formControlName="title"
+              class="border border-gray-300 px-3 py-2 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 w-full"
               placeholder="Enter title" />
           </ng-template>
 
-          <!-- Description -->
           <ng-container *ngIf="!isEditMode; else editDesc">
             <span class="text-sm text-gray-500">
               {{ fieldGroups.at(0).get('description')?.value || 'Add description ...' }}
             </span>
           </ng-container>
           <ng-template #editDesc>
-            <textarea
-              formControlName="description"
-              rows="2"
-              class="border border-gray-300 px-3 py-2 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 max-w-sm w-full resize-none"
+            <textarea formControlName="description" rows="2"
+              class="border border-gray-300 px-3 py-2 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 w-full resize-none"
               placeholder="Add description ..."></textarea>
           </ng-template>
         </div>
 
-        <!-- Action Icons -->
         <div class="flex items-start gap-3 mt-1">
-          <button *ngIf="!isEditMode" type="button" (click)="enterEditMode()" title="Edit"
-                  class="text-blue-600 hover:text-blue-800">
+          <button *ngIf="!isEditMode" type="button" (click)="enterEditMode()" class="text-blue-600 hover:text-blue-800"
+            title="Edit">
             <i class="fas fa-pencil-alt"></i>
           </button>
-          <button *ngIf="isEditMode" type="button" (click)="saveChanges()" title="Save"
-                  class="text-green-600 hover:text-green-800 text-sm">
+          <button *ngIf="isEditMode" type="button" (click)="saveHeader()" class="text-green-600 hover:text-green-800"
+            title="Save">
             <i class="fas fa-check"></i>
           </button>
-          <button *ngIf="isEditMode" type="button" (click)="cancelEdit()" title="Cancel"
-                  class="text-yellow-500 hover:text-yellow-700 text-sm">
+          <button *ngIf="isEditMode" type="button" (click)="cancelEdit()" class="text-yellow-500 hover:text-yellow-700"
+            title="Cancel">
             <i class="fas fa-times"></i>
           </button>
-          <button type="button" (click)="copyGroup()" title="Copy"
-                  class="text-indigo-500 hover:text-indigo-700 text-sm">
+          <button type="button" (click)="copyGroup()" class="text-indigo-500 hover:text-indigo-700" title="Copy">
             <i class="fas fa-copy"></i>
           </button>
-          <button type="button" (click)="deleteGroup()" title="Delete"
-                  class="text-red-500 hover:text-red-700 text-sm">
+          <button type="button" (click)="deleteGroup()" class="text-red-500 hover:text-red-700" title="Delete">
             <i class="fas fa-trash-alt"></i>
           </button>
         </div>
       </div>
+
+      <!-- 🟨 RENDERED FORM FIELDS SECTION -->
+      <div formArrayName="formFields">
+        <div *ngFor="let field of formFields.controls; let i = index; trackBy: trackByFn" [formGroupName]="i"
+          class="mb-4">
+          <app-form-renderer [formFields]="formFields" (edit)="editField(i)" (copy)="copyField(i)"
+            (delete)="deleteField(i)" (fileChange)="onFileChange($event)" (checkboxChange)="onCheckboxChange($event)">
+          </app-form-renderer>
+        </div>
+      </div>
+
+      <!-- 🟦 BOTTOM BUTTON BAR -->
+      <div class="flex justify-between items-center bg-white p-4 rounded-lg shadow mt-8">
+        <div class="flex gap-4">
+          <button type="button" (click)="saveForm()"
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            Save
+          </button>
+          <button type="button" (click)="previewForm()"
+            class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
+            Preview
+          </button>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <button type="button" (click)="exportForm()"
+            class="bg-gray-600 text-white px-3 py-2 rounded hover:bg-gray-700">
+            Export
+          </button>
+          <label class="cursor-pointer text-sm font-medium text-blue-600 hover:underline">
+            Import
+            <input type="file" (change)="importForm($event)" accept=".json" hidden>
+          </label>
+        </div>
+      </div>
+
     </div>
   </form>
-
-  <div *ngIf="!selectedGroup" class="text-gray-400 text-sm italic mt-4">
-    Select a field group from the left pane to view its details.
-  </div>
 </div>
