@@ -94,11 +94,19 @@
         <i class="fas fa-download"></i>
       </button>
       <label class="cursor-pointer text-green-600 hover:text-green-800 text-lg"
-        [ngClass]="{'opacity-50 pointer-events-none': renderedFields.length < 2}" title="Import">
+        title="Import">
         <i class="fas fa-upload"></i>
         <input type="file" (change)="importForm($event)" accept=".json" hidden>
       </label>
     </div>
   </div>
+
+  <!-- RIGHT DRAWER: Edit Field Form -->
+  <app-right-drawer
+    *ngIf="isRightDrawerOpen"
+    [fieldData]="selectedRenderedField"
+    (closeDrawer)="onCloseDrawer()"
+    (saveField)="onFieldUpdated($event)">
+  </app-right-drawer>
 
 </div>

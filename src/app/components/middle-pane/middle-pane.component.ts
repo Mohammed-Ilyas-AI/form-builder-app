@@ -12,6 +12,8 @@ import { LocalStorageService } from '../../services/local-storage/local-storage.
 import { FieldGroup } from '../../models/field-group';
 import { FormRendererComponent } from '../../features/form-renderer/form-renderer.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { FormElement } from '../../models/form-element';
+import { RightDrawerComponent } from "../../features/right-drawer/right-drawer.component";
 
 @Component({
   selector: 'app-middle-pane',
@@ -22,7 +24,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     ReactiveFormsModule,
     FormRendererComponent,
     DragDropModule,
-  ],
+    RightDrawerComponent
+],
   templateUrl: './middle-pane.component.html',
   styleUrl: './middle-pane.component.css',
 })
@@ -33,6 +36,8 @@ export class MiddlePaneComponent implements OnInit {
   previewMode = false;
   renderedFields: any[] = [];
   isLoading: boolean = false;
+  isRightDrawerOpen: boolean = false;
+  selectedRenderedField: FormElement | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -169,7 +174,24 @@ export class MiddlePaneComponent implements OnInit {
   }
 
   editField(field: any): void {
-    console.log('Editing field:', field);
+    this.selectedRenderedField = field;
+    this.isRightDrawerOpen = true;
+  }
+
+  onCloseDrawer(): void {
+    this.isRightDrawerOpen = false;
+    this.selectedRenderedField = null;
+  }
+
+  onFieldUpdated(updatedField: FormElement): void {
+    // Find and update the field in the renderedFields array.
+    const index = this.renderedFields.findIndex(field => field.id === updatedField.id);
+    if (index !== -1) {
+      this.renderedFields[index] = updatedField;
+      // Optionally update in local storage.
+      this.storageService.updateFormField(this.renderedFields);
+    }
+    this.onCloseDrawer();
   }
 
   clearForm(): void {

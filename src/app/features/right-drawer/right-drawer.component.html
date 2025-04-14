@@ -1,1 +1,93 @@
-<p>right-drawer works!</p>
+<!-- Right Drawer Container -->
+<div class="right-drawer fixed inset-y-0 right-0 w-96 bg-white shadow-xl z-50 transform transition-transform duration-300"
+     [class.open]="drawerOpen" [class.closed]="!drawerOpen">
+  <!-- Drawer Header -->
+  <div class="flex justify-between items-center p-4 border-b">
+    <h2 class="text-2xl font-semibold text-gray-800">Edit Field</h2>
+    <button (click)="close()" class="text-gray-600 hover:text-gray-800">
+      <i class="fas fa-times fa-lg"></i>
+    </button>
+  </div>
+  <!-- Drawer Content -->
+  <div class="p-4 overflow-y-auto space-y-6">
+    <form [formGroup]="editForm">
+      <!-- Field Name -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Field Name</label>
+        <input type="text" formControlName="fieldName"
+               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 py-2 px-3"
+               placeholder="Enter field name" />
+      </div>
+      <!-- Description -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Description</label>
+        <textarea formControlName="description" rows="2"
+                  class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 py-2 px-3"
+                  placeholder="Enter description (optional)"></textarea>
+      </div>
+      <!-- Placeholder -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Placeholder</label>
+        <input type="text" formControlName="placeholder"
+               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 py-2 px-3"
+               placeholder="Enter placeholder text" />
+      </div>
+      <!-- Required Field -->
+      <div class="flex items-center">
+        <input type="checkbox" formControlName="required" id="requiredCheckbox"
+               class="h-4 w-4 text-blue-600 border-gray-300 rounded" />
+        <label for="requiredCheckbox" class="ml-2 text-sm text-gray-700">Required Field</label>
+      </div>
+      <!-- Additional Properties Section -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Additional Properties</label>
+        <div formArrayName="additionalProperties" class="space-y-2 mt-1">
+          <div *ngFor="let prop of additionalProperties.controls; let i = index"
+               [formGroupName]="i" class="flex gap-2 items-center">
+            <input type="text" formControlName="key"
+                   placeholder="Property Name"
+                   class="block w-1/2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 py-2 px-2" />
+            <input type="text" formControlName="value"
+                   placeholder="Property Value"
+                   class="block w-1/2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 py-2 px-2" />
+            <button type="button" (click)="removeProperty(i)" class="text-red-600 hover:text-red-800">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </div>
+        </div>
+        <button type="button" (click)="addProperty()" class="mt-2 text-sm text-blue-600 hover:text-blue-800">
+          <i class="fas fa-plus"></i> Add Property
+        </button>
+      </div>
+      <!-- Validations Section -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Validations</label>
+        <div formArrayName="validations" class="space-y-2 mt-1">
+          <div *ngFor="let valid of validations.controls; let i = index"
+               [formGroupName]="i" class="flex gap-2 items-center">
+            <input type="text" formControlName="name"
+                   placeholder="Validation Name"
+                   class="block w-1/2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 py-2 px-2" />
+            <input type="text" formControlName="value"
+                   placeholder="Validation Value"
+                   class="block w-1/2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 py-2 px-2" />
+            <button type="button" (click)="removeValidation(i)" class="text-red-600 hover:text-red-800">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </div>
+        </div>
+        <button type="button" (click)="addValidation()" class="mt-2 text-sm text-blue-600 hover:text-blue-800">
+          <i class="fas fa-plus"></i> Add Validation
+        </button>
+      </div>
+
+      <!-- Save Button -->
+      <div class="flex justify-end">
+        <button type="button" (click)="onSave()"
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          Save Changes
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

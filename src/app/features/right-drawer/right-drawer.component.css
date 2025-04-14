@@ -1,0 +1,11 @@
+.right-drawer {
+  /* When open, the drawer is in place with a delay before the transition starts */
+  transform: translateX(0%);
+  transition: transform 0.3s ease-in-out 0.1s;
+}
+
+.right-drawer.closed {
+  /* When closed, the drawer slides offscreen with a delay preceding the move */
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out 0.1s;
+}
