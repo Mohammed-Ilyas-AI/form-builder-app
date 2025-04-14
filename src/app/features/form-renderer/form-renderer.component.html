@@ -1,4 +1,4 @@
-<div class="bg-white border border-gray-300 p-4 rounded-lg shadow relative mb-4">
+<div class="bg-white border border-gray-300 p-4 rounded-lg shadow relative mb-4" [attr.title]="tooltip">
   <!-- Action Buttons -->
   <div class="absolute top-2 right-2 flex gap-2">
     <button type="button" (click)="onEdit()" title="Edit" class="text-gray-600 hover:text-blue-600">
@@ -17,30 +17,31 @@
     <label class="block font-medium text-gray-700 mb-2">{{ field.label }}</label>
     <ng-container [ngSwitch]="field.type">
       <!-- 1. Input field (text) -->
-      <input *ngSwitchCase="'text'"
-             type="text"
-             class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-             placeholder="Enter text" />
+      <div *ngSwitchCase="'text'">
+        <input type="text" [formControl]="control" [ngClass]="cssClass"
+               class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+               [placeholder]="field.placeholder || 'Enter text'" />
+      </div>
 
       <!-- 2. Textarea -->
-      <textarea *ngSwitchCase="'textarea'"
-                rows="3"
-                class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-                placeholder="Enter text">
-      </textarea>
+      <div *ngSwitchCase="'textarea'">
+        <textarea rows="3" [formControl]="control" [ngClass]="cssClass"
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+                  [placeholder]="field.placeholder || 'Enter text'"></textarea>
+      </div>
 
       <!-- 3. Number field -->
-      <input *ngSwitchCase="'number'"
-             type="number"
-             class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-             placeholder="Enter number" />
+      <div *ngSwitchCase="'number'">
+        <input type="number" [formControl]="control" [ngClass]="cssClass"
+               class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+               [placeholder]="field.placeholder || 'Enter number'" />
+      </div>
 
       <!-- 4. Radio field -->
       <div *ngSwitchCase="'radio'" class="space-y-2">
         <div *ngFor="let option of field.options" class="flex items-center">
-          <input type="radio"
-                 [name]="field.id"
-                 [value]="option"
+          <input type="radio" [name]="field.id" [value]="option"
+                 [checked]="control.value === option" (change)="onRadioChange(option)"
                  class="mr-2" />
           <span>{{ option }}</span>
         </div>
@@ -49,44 +50,61 @@
       <!-- 5. Checkbox field -->
       <div *ngSwitchCase="'checkbox'" class="space-y-2">
         <div *ngFor="let option of field.options" class="flex items-center">
-          <input type="checkbox"
-                 [value]="option"
+          <input type="checkbox" [value]="option"
+                 (change)="onCheckboxChange($event, option)"
                  class="mr-2" />
           <span>{{ option }}</span>
         </div>
       </div>
 
       <!-- 6. Dropdown -->
-      <select *ngSwitchCase="'dropdown'"
-              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300">
-        <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
-      </select>
+      <div *ngSwitchCase="'dropdown'">
+        <select [formControl]="control" [ngClass]="cssClass"
+                class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300">
+          <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
+        </select>
+      </div>
 
       <!-- 7. Date picker -->
-      <input *ngSwitchCase="'date'"
-             type="date"
-             class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" />
+      <div *ngSwitchCase="'date'">
+        <input type="date" [formControl]="control" [ngClass]="cssClass"
+               class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" />
+      </div>
 
       <!-- 8. Time picker -->
-      <input *ngSwitchCase="'time'"
-             type="time"
-             class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" />
+      <div *ngSwitchCase="'time'">
+        <input type="time" [formControl]="control" [ngClass]="cssClass"
+               class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" />
+      </div>
 
       <!-- 9. Date and time picker -->
-      <input *ngSwitchCase="'datetime'"
-             type="datetime-local"
-             class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" />
+      <div *ngSwitchCase="'datetime'">
+        <input type="datetime-local" [formControl]="control" [ngClass]="cssClass"
+               class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" />
+      </div>
 
       <!-- 10. File upload -->
-      <input *ngSwitchCase="'file'"
-             type="file"
-             class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" />
+      <div *ngSwitchCase="'file'">
+        <input type="file" [formControl]="control" [ngClass]="cssClass"
+               class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" />
+      </div>
 
       <!-- Default fallback -->
-      <input *ngSwitchDefault
-             type="text"
-             class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-             placeholder="Enter value" />
+      <div *ngSwitchDefault>
+        <input type="text" [formControl]="control" [ngClass]="cssClass"
+               class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+               [placeholder]="field.placeholder || 'Enter value'" />
+      </div>
     </ng-container>
+
+    <!-- Validation Errors (for controls that support them) -->
+    <div *ngIf="(control.touched || control.dirty) && control.invalid" class="text-red-500 text-xs mt-1">
+      <span *ngIf="control.errors?.['minlength']">Minimum length is {{ minLength }} characters.</span>
+      <span *ngIf="control.errors?.['maxlength']">Maximum length is {{ maxLength }} characters.</span>
+      <span *ngIf="control.errors?.['email']">Please enter a valid email.</span>
+      <span *ngIf="control.errors?.['pattern']">Invalid format.</span>
+    </div>
+    <!-- Helper Text -->
+    <div *ngIf="helperText" class="text-gray-500 text-xs mt-1">{{ helperText }}</div>
   </div>
 </div>
