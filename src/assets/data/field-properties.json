@@ -22,6 +22,39 @@
         "type": "text",
         "placeholder": "Enter default value",
         "icon": "fas fa-check-circle"
+      },
+      {
+        "id": "helperText",
+        "name": "Helper Text",
+        "type": "text",
+        "placeholder": "Enter helper text",
+        "icon": "fas fa-info-circle"
+      },
+      {
+        "id": "cssClass",
+        "name": "CSS Class",
+        "type": "text",
+        "placeholder": "Enter CSS class",
+        "icon": "fas fa-code"
+      },
+      {
+        "id": "tooltip",
+        "name": "Tooltip",
+        "type": "text",
+        "placeholder": "Enter tooltip text",
+        "icon": "fas fa-comment"
+      },
+      {
+        "id": "visibility",
+        "name": "Visibility",
+        "type": "checkbox",
+        "icon": "fas fa-eye"
+      },
+      {
+        "id": "readonly",
+        "name": "Read-Only",
+        "type": "checkbox",
+        "icon": "fas fa-lock"
       }
     ]
   },
@@ -47,6 +80,19 @@
         "type": "number",
         "placeholder": "Maximum characters",
         "icon": "fas fa-arrow-up"
+      },
+      {
+        "id": "email",
+        "name": "Email",
+        "type": "checkbox",
+        "icon": "fas fa-envelope"
+      },
+      {
+        "id": "pattern",
+        "name": "Pattern",
+        "type": "text",
+        "placeholder": "Enter regex pattern",
+        "icon": "fas fa-pencil-ruler"
       }
     ]
   }

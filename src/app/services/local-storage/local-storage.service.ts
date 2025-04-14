@@ -47,23 +47,16 @@ export class LocalStorageService {
     const updatedGroups = this.fieldGroupService.getFieldGroups().filter(g => g.id !== groupToDelete.id);
     this.fieldGroupService['fieldGroupsSubject'].next(updatedGroups); // Direct update
 
-    // Select the first group again or null
     this.setSelectedFieldGroup(updatedGroups[0] || null);
   }
 
-   /**
-   * Saves the two separated form arrays into local storage.
-   *
-   * @param formData An object containing two separate arrays:
-   *   - fieldGroups: the header (selected field group) data,
-   *   - formFields: the rendered form fields data.
-   *
-   * This method stores the header data under the key "savedFieldGroups"
-   * and the rendered fields under the key "savedFormFields".
-   */
    saveForm(formData: { fieldGroups: any[]; formFields: any[] }): void {
     localStorage.setItem('savedFieldGroups', JSON.stringify(formData.fieldGroups));
     localStorage.setItem('savedFormFields', JSON.stringify(formData.formFields));
+  }
+
+  updateFormField(updatedFields: any[]): void {
+    localStorage.setItem('savedFormFields', JSON.stringify(updatedFields));
   }
 
 }
