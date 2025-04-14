@@ -77,12 +77,13 @@
     <div class="flex space-x-2">
       <button type="button" (click)="saveForm()"
         class="bg-blue-600 text-white text-xs px-2 py-1 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-        [disabled]="renderedFields.length < 2">
+        [disabled]="isSaveDisabled">
         Save
       </button>
       <button type="button" (click)="previewForm()"
         class="bg-purple-600 text-white text-xs px-2 py-1 rounded hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
-        [disabled]="renderedFields.length < 2">
+        [disabled]="isSaveDisabled"
+        [title]="'After form is saved only you can preview the form'">
         Preview
       </button>
     </div>
@@ -90,7 +91,7 @@
     <div class="flex space-x-3">
       <button type="button" (click)="exportForm()"
         class="text-blue-600 hover:text-blue-800 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
-        [disabled]="renderedFields.length < 2" title="Export">
+        [disabled]="isSaveDisabled" title="Export">
         <i class="fas fa-download"></i>
       </button>
       <label class="cursor-pointer text-green-600 hover:text-green-800 text-lg"
@@ -108,5 +109,13 @@
     (closeDrawer)="onCloseDrawer()"
     (saveField)="onFieldUpdated($event)">
   </app-right-drawer>
+
+  <!-- FORM PREVIEW -->
+  <app-form-preview
+  *ngIf="isPreviewOpen"
+  [headerData]="savedFormData?.fieldGroups[0]"
+  [fields]="savedFormData?.formFields"
+  (closePreview)="isPreviewOpen = false">
+</app-form-preview>
 
 </div>

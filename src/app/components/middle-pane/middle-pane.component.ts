@@ -14,6 +14,7 @@ import { FormRendererComponent } from '../../features/form-renderer/form-rendere
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FormElement } from '../../models/form-element';
 import { RightDrawerComponent } from "../../features/right-drawer/right-drawer.component";
+import { FormPreviewComponent } from "../../features/form-preview/form-preview/form-preview.component";
 
 @Component({
   selector: 'app-middle-pane',
@@ -24,7 +25,8 @@ import { RightDrawerComponent } from "../../features/right-drawer/right-drawer.c
     ReactiveFormsModule,
     FormRendererComponent,
     DragDropModule,
-    RightDrawerComponent
+    RightDrawerComponent,
+    FormPreviewComponent
 ],
   templateUrl: './middle-pane.component.html',
   styleUrl: './middle-pane.component.css',
@@ -37,7 +39,10 @@ export class MiddlePaneComponent implements OnInit {
   renderedFields: any[] = [];
   isLoading: boolean = false;
   isRightDrawerOpen: boolean = false;
+  isPreviewOpen: boolean = false;
   selectedRenderedField: FormElement | null = null;
+  savedFormData: any = null;
+  isFormSaved: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -200,6 +205,10 @@ export class MiddlePaneComponent implements OnInit {
     this.form.setControl('formFields', this.fb.array([]));
   }
 
+  get isSaveDisabled(): boolean {
+    return this.renderedFields.length < 2 || this.isEditMode || this.isRightDrawerOpen;
+  }
+
   saveForm(): void {
     if (!this.selectedGroup) return;
 
@@ -214,14 +223,16 @@ export class MiddlePaneComponent implements OnInit {
 
     localStorage.setItem('savedForm', JSON.stringify(formDataToSave));
 
-    console.log('Saved form:', formDataToSave);
     alert('Form saved successfully in local storage!');
+    this.savedFormData = formDataToSave;
+    this.isFormSaved = true;
     this.isEditMode = false;
   }
 
   previewForm(): void {
-    this.previewMode = true;
-    console.log('Preview form:', this.form.value);
+    if (this.isFormSaved) {
+      this.isPreviewOpen = true;
+    }
   }
 
   exportForm(): void {
