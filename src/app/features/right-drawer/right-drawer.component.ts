@@ -8,6 +8,10 @@ import {
 } from '@angular/forms';
 import { FormElement } from '../../models/form-element';
 import { CommonModule } from '@angular/common';
+import {
+  FieldPropertyService,
+  FieldProperty,
+} from '../../services/field-properties/field-properties.service';
 
 @Component({
   selector: 'app-right-drawer',
@@ -25,7 +29,13 @@ export class RightDrawerComponent implements OnInit {
 
   drawerOpen: boolean = true;
 
-  constructor(private fb: FormBuilder) {
+  validationOptions: FieldProperty[] = [];
+  generalOptions: FieldProperty[] = [];
+
+  constructor(
+    private fb: FormBuilder,
+    private fieldPropertyService: FieldPropertyService
+  ) {
     this.editForm = this.fb.group({
       fieldName: ['', Validators.required],
       description: [''],
@@ -37,6 +47,15 @@ export class RightDrawerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.fieldPropertyService.config$.subscribe(config => {
+      if (config && config.length) {
+        const generalCategory = config.find(cat => cat.category.toLowerCase() === 'general');
+        const validationCategory = config.find(cat => cat.category.toLowerCase() === 'validation');
+        this.generalOptions = generalCategory ? generalCategory.properties : [];
+        this.validationOptions = validationCategory ? validationCategory.properties : [];
+      }
+    });
+
     if (this.fieldData) {
       let currentName = this.fieldData.label.trim();
       if (currentName.endsWith('*')) {
@@ -49,13 +68,31 @@ export class RightDrawerComponent implements OnInit {
         required: (this.fieldData as any).required || false,
       });
 
-      if ((this.fieldData as any).additionalProperties) {
-        (this.editForm.get('additionalProperties') as FormArray).clear();
-        (this.fieldData as any).additionalProperties.forEach((prop: any) => {
+      if (
+        (this.fieldData as any).additionalProperties &&
+        Array.isArray((this.fieldData as any).additionalProperties)
+      ) {
+        const props = (this.fieldData as any).additionalProperties;
+        props.forEach((prop: any) => {
           this.additionalProperties.push(
             this.fb.group({
               key: [prop.name, Validators.required],
               value: [prop.value],
+            })
+          );
+        });
+      }
+
+      if (
+        (this.fieldData as any).validations &&
+        Array.isArray((this.fieldData as any).validations)
+      ) {
+        const vals = (this.fieldData as any).validations;
+        vals.forEach((val: any) => {
+          this.validations.push(
+            this.fb.group({
+              name: [val.name, Validators.required],
+              value: [val.value, Validators.required],
             })
           );
         });
@@ -89,7 +126,10 @@ export class RightDrawerComponent implements OnInit {
   addProperty(): void {
     this.additionalProperties.push(
       this.fb.group({
-        key: ['', Validators.required],
+        key: [
+          this.generalOptions.length ? this.generalOptions[0].id : '',
+          Validators.required,
+        ],
         value: [''],
       })
     );
@@ -102,7 +142,10 @@ export class RightDrawerComponent implements OnInit {
   addValidation(): void {
     this.validations.push(
       this.fb.group({
-        name: ['', Validators.required],
+        name: [
+          this.validationOptions.length ? this.validationOptions[0].id : '',
+          Validators.required,
+        ],
         value: ['', Validators.required],
       })
     );
