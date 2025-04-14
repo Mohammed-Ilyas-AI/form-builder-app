@@ -47,12 +47,18 @@ export class RightDrawerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fieldPropertyService.config$.subscribe(config => {
+    this.fieldPropertyService.config$.subscribe((config) => {
       if (config && config.length) {
-        const generalCategory = config.find(cat => cat.category.toLowerCase() === 'general');
-        const validationCategory = config.find(cat => cat.category.toLowerCase() === 'validation');
+        const generalCategory = config.find(
+          (cat) => cat.category.toLowerCase() === 'general'
+        );
+        const validationCategory = config.find(
+          (cat) => cat.category.toLowerCase() === 'validation'
+        );
         this.generalOptions = generalCategory ? generalCategory.properties : [];
-        this.validationOptions = validationCategory ? validationCategory.properties : [];
+        this.validationOptions = validationCategory
+          ? validationCategory.properties
+          : [];
       }
     });
 
@@ -174,18 +180,18 @@ export class RightDrawerComponent implements OnInit {
       placeholder: formValues.placeholder,
       description: formValues.description,
       required: formValues.required,
-      additionalProperties: formValues.additionalProperties.map(
-        (prop: any) => ({
-          id: this.fieldData!.id + '-' + prop.key,
-          name: prop.key,
-          value: prop.value,
-        })
-      ),
-      validations: formValues.validations.map((val: any) => ({
-        id: this.fieldData!.id + '-' + val.name,
-        name: val.name,
-        value: val.value,
-      })),
+      additionalProperties: formValues.additionalProperties.map((prop: any) => {
+        const configObj = this.generalOptions.find(
+          (o) => o.id === prop.key
+        ) || { id: prop.key, name: prop.key };
+        return { ...configObj, value: prop.value };
+      }),
+      validations: formValues.validations.map((val: any) => {
+        const configObj = this.validationOptions.find(
+          (o) => o.id === val.name
+        ) || { id: val.name, name: val.name };
+        return { ...configObj, value: val.value };
+      }),
     };
 
     this.saveField.emit(updatedField);
