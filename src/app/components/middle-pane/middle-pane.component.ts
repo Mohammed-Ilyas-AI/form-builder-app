@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
-  AbstractControl,
   FormArray,
   FormBuilder,
   FormGroup,
@@ -8,13 +7,13 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { LocalStorageService } from '../../services/local-storage/local-storage.service';
-import { FieldGroup } from '../../models/field-group';
+import { FormPreviewComponent } from "../../features/form-preview/form-preview.component";
 import { FormRendererComponent } from '../../features/form-renderer/form-renderer.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { FormElement } from '../../models/form-element';
 import { RightDrawerComponent } from "../../features/right-drawer/right-drawer.component";
-import { FormPreviewComponent } from "../../features/form-preview/form-preview/form-preview.component";
+import { FieldGroup } from '../../models/field-group';
+import { LocalStorageService } from '../../services/local-storage/local-storage.service';
+import { FormElement } from './../../models/form-element';
 
 @Component({
   selector: 'app-middle-pane',
@@ -29,7 +28,7 @@ import { FormPreviewComponent } from "../../features/form-preview/form-preview/f
     FormPreviewComponent
 ],
   templateUrl: './middle-pane.component.html',
-  styleUrl: './middle-pane.component.css',
+  styleUrls: ['./middle-pane.component.css'],
 })
 export class MiddlePaneComponent implements OnInit {
   form!: FormGroup;

@@ -23,20 +23,17 @@ describe('RightPaneComponent', () => {
   ];
 
   beforeEach(async () => {
-    const spy = jasmine.createSpyObj('FormElementService', ['filterCategories'], {
-      categories$: of(mockCategories)
+    mockService = jasmine.createSpyObj('FormElementService', ['filterCategories'], {
+      categories$: of(mockCategories),
     });
 
     await TestBed.configureTestingModule({
-      imports: [CommonModule, FormsModule, DragDropModule, RightPaneComponent],
-      providers: [{ provide: FormElementService, useValue: spy }]
+      imports: [RightPaneComponent, CommonModule, FormsModule, DragDropModule],
+      providers: [{ provide: FormElementService, useValue: mockService }]
     }).compileComponents();
 
     fixture = TestBed.createComponent(RightPaneComponent);
     component = fixture.componentInstance;
-    mockService = TestBed.inject(FormElementService) as jasmine.SpyObj<FormElementService>;
-
-    mockService.filterCategories.and.returnValue(mockCategories);
     fixture.detectChanges();
   });
 
@@ -50,15 +47,19 @@ describe('RightPaneComponent', () => {
 
   it('should filter categories based on search query', () => {
     component.searchQuery = 'Text';
+    fixture.detectChanges();
     const result = component.filteredCategories;
+    expect(result.length).toBeGreaterThan(0);
     expect(result[0].fields[0].label).toContain('Text');
   });
 
   it('should set drag data on dragstart', () => {
-    const event = new DragEvent('dragstart', { dataTransfer: new DataTransfer() });
-    const element = { label: 'Text Field', type: 'text', icon: 'fas fa-font' };
-    component.onDragStart(event, element);
+    const event = jasmine.createSpyObj('DragEvent', ['dataTransfer']);
+    event.dataTransfer = new DataTransfer();
 
-    expect(event.dataTransfer?.getData('formElement')).toBe(JSON.stringify(element));
+    const element = { label: 'Text Field', type: 'text', icon: 'fas fa-font' };
+    component.onDragStart(event as DragEvent, element);
+
+    expect(event.dataTransfer.getData('text/plain')).toBe(JSON.stringify(element));
   });
 });

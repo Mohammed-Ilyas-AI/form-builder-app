@@ -12,3 +12,8 @@
 *::-webkit-scrollbar {
   display: none; /* Chrome, Safari */
 }
+
+.dndDropzone .dndDraggable {
+  touch-action: none; /* Disables the default touch behavior */
+  -webkit-user-drag: none;
+}
