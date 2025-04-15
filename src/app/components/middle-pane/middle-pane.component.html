@@ -79,12 +79,13 @@
     <div class="flex space-x-2">
       <button type="button" (click)="saveForm()"
         class="bg-blue-600 text-white text-xs px-2 py-1 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+        [title]="isSaveDisabled ? 'Save is disabled until you edit the header and update at least two fields.' : ''"
         [disabled]="isSaveDisabled">
         Save
       </button>
       <button type="button" (click)="previewForm()"
         class="bg-purple-600 text-white text-xs px-2 py-1 rounded hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
-        [disabled]="isSaveDisabled" [title]="'After form is saved only you can preview the form'">
+        [disabled]="isPreviewDisabled" [title]="isPreviewDisabled ? 'Save the form successfully to enable preview.' : ''">
         Preview
       </button>
     </div>
@@ -92,7 +93,7 @@
     <div class="flex space-x-3">
       <button type="button" (click)="exportForm()"
         class="text-blue-600 hover:text-blue-800 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
-        [disabled]="isSaveDisabled" title="Export">
+        [disabled]="isExportDisabled" [title]="isExportDisabled ? 'Save the form successfully to enable export.' : ''">
         <i class="fas fa-download"></i>
       </button>
       <label class="cursor-pointer text-green-600 hover:text-green-800 text-lg" title="Import">

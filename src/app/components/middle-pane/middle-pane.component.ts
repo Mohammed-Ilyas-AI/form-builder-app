@@ -42,6 +42,8 @@ export class MiddlePaneComponent implements OnInit {
   selectedRenderedField: FormElement | null = null;
   savedFormData: any = null;
   isFormSaved: boolean = false;
+  isHeaderSaved: boolean = false;
+  isRightDrawerSaved: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -158,6 +160,7 @@ export class MiddlePaneComponent implements OnInit {
 
     this.storageService.updateSelectedFieldGroup(this.selectedGroup);
     this.isEditMode = false;
+    this.isHeaderSaved = true;
   }
 
   copyGroup(): void {
@@ -195,6 +198,8 @@ export class MiddlePaneComponent implements OnInit {
       // Optionally update in local storage.
       this.storageService.updateFormField(this.renderedFields);
     }
+    this.isRightDrawerSaved = true;
+
     this.onCloseDrawer();
   }
 
@@ -205,7 +210,15 @@ export class MiddlePaneComponent implements OnInit {
   }
 
   get isSaveDisabled(): boolean {
-    return this.renderedFields.length < 2 || this.isEditMode || this.isRightDrawerOpen;
+    return !(this.isHeaderSaved && this.renderedFields.length >= 2 && this.isRightDrawerSaved);
+  }
+
+  get isPreviewDisabled(): boolean {
+    return !this.isFormSaved;
+  }
+
+  get isExportDisabled(): boolean {
+    return !this.isFormSaved;
   }
 
   saveForm(): void {
