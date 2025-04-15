@@ -58,17 +58,19 @@
         "id": "single-select",
         "type": "radio",
         "label": "Single Select",
-        "icon": "fas fa-dot-circle"
+        "icon": "fas fa-dot-circle",
+        "options": ["Option 1", "Option 2", "Option 3"]
       },
       {
         "id": "multi-select",
         "type": "checkbox",
         "label": "Multi Select",
-        "icon": "fas fa-check-square"
+        "icon": "fas fa-check-square",
+        "options": ["Option A", "Option B", "Option C"]
       },
       {
         "id": "dropdown",
-        "type": "select",
+        "type": "dropdown",
         "label": "Dropdown",
         "options": ["Option 1", "Option 2"],
         "icon": "fas fa-caret-down"

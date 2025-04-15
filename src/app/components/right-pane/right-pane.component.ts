@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-right-pane',
   imports: [CommonModule, DragDropModule, FormsModule],
   templateUrl: './right-pane.component.html',
-  styleUrl: './right-pane.component.css'
+  styleUrls: ['./right-pane.component.css']
 })
 export class RightPaneComponent implements OnInit{
   searchQuery: string = '';
@@ -25,8 +25,8 @@ export class RightPaneComponent implements OnInit{
     return this.formElementService.filterCategories(this.searchQuery);
   }
 
-  // Native dragstart event: set dataTransfer with the element's JSON.
   onDragStart(event: DragEvent, element: any): void {
     event.dataTransfer?.setData("text/plain", JSON.stringify(element));
   }
+
 }

@@ -1,11 +1,10 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { FormRendererComponent } from "../../form-renderer/form-renderer.component";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-form-preview',
-  imports: [FormRendererComponent, CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './form-preview.component.html',
   styleUrl: './form-preview.component.css'
 })

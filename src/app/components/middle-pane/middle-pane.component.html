@@ -55,8 +55,10 @@
   </div>
 
   <!-- DROP ZONE -->
-  <div class="drop-zone flex-1 p-4 relative overflow-y-auto" (dragover)="onDragOver($event)"
-    (drop)="onDropNative($event)" style="min-height:200px;">
+  <div class="drop-zone flex-1 p-4 relative overflow-y-auto"
+    (dragover)="onDragOver($event)"
+    (drop)="onDropNative($event)"
+    style="min-height:200px;">
     <!-- Animated Loader with Text -->
     <div *ngIf="isLoading"
       class="absolute inset-0 flex flex-col items-center justify-center bg-white bg-opacity-75 z-10">
@@ -82,8 +84,7 @@
       </button>
       <button type="button" (click)="previewForm()"
         class="bg-purple-600 text-white text-xs px-2 py-1 rounded hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
-        [disabled]="isSaveDisabled"
-        [title]="'After form is saved only you can preview the form'">
+        [disabled]="isSaveDisabled" [title]="'After form is saved only you can preview the form'">
         Preview
       </button>
     </div>
@@ -94,8 +95,7 @@
         [disabled]="isSaveDisabled" title="Export">
         <i class="fas fa-download"></i>
       </button>
-      <label class="cursor-pointer text-green-600 hover:text-green-800 text-lg"
-        title="Import">
+      <label class="cursor-pointer text-green-600 hover:text-green-800 text-lg" title="Import">
         <i class="fas fa-upload"></i>
         <input type="file" (change)="importForm($event)" accept=".json" hidden>
       </label>
@@ -103,19 +103,13 @@
   </div>
 
   <!-- RIGHT DRAWER: Edit Field Form -->
-  <app-right-drawer
-    *ngIf="isRightDrawerOpen"
-    [fieldData]="selectedRenderedField"
-    (closeDrawer)="onCloseDrawer()"
+  <app-right-drawer *ngIf="isRightDrawerOpen" [fieldData]="selectedRenderedField" (closeDrawer)="onCloseDrawer()"
     (saveField)="onFieldUpdated($event)">
   </app-right-drawer>
 
   <!-- FORM PREVIEW -->
-  <app-form-preview
-  *ngIf="isPreviewOpen"
-  [headerData]="savedFormData?.fieldGroups[0]"
-  [fields]="savedFormData?.formFields"
-  (closePreview)="isPreviewOpen = false">
-</app-form-preview>
+  <app-form-preview *ngIf="isPreviewOpen" [headerData]="savedFormData?.fieldGroups[0]"
+    [fields]="savedFormData?.formFields" (closePreview)="isPreviewOpen = false">
+  </app-form-preview>
 
 </div>
