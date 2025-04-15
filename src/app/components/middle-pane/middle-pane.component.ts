@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FormPreviewComponent } from "../../features/form-preview/form-preview/form-preview.component";
+import { FormPreviewComponent } from "../../features/form-preview/form-preview.component";
 import { FormRendererComponent } from '../../features/form-renderer/form-renderer.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { RightDrawerComponent } from "../../features/right-drawer/right-drawer.component";
