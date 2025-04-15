@@ -7,10 +7,10 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FormPreviewComponent } from "../../features/form-preview/form-preview.component";
+import { FormPreviewComponent } from '../../features/form-preview/form-preview.component';
 import { FormRendererComponent } from '../../features/form-renderer/form-renderer.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { RightDrawerComponent } from "../../features/right-drawer/right-drawer.component";
+import { RightDrawerComponent } from '../../features/right-drawer/right-drawer.component';
 import { FieldGroup } from '../../models/field-group';
 import { LocalStorageService } from '../../services/local-storage/local-storage.service';
 import { FormElement } from './../../models/form-element';
@@ -25,8 +25,8 @@ import { FormElement } from './../../models/form-element';
     FormRendererComponent,
     DragDropModule,
     RightDrawerComponent,
-    FormPreviewComponent
-],
+    FormPreviewComponent,
+  ],
   templateUrl: './middle-pane.component.html',
   styleUrls: ['./middle-pane.component.css'],
 })
@@ -53,16 +53,18 @@ export class MiddlePaneComponent implements OnInit {
   ngOnInit(): void {
     this.initializeForm();
 
-    this.storageService.selectedFieldGroup$.subscribe((group: FieldGroup | null) => {
-      if (group) {
-        this.selectedGroup = group;
-        this.setFieldGroupData(group);
-      } else {
-        this.selectedGroup = null;
-        this.form.reset();
-        this.renderedFields = [];
+    this.storageService.selectedFieldGroup$.subscribe(
+      (group: FieldGroup | null) => {
+        if (group) {
+          this.selectedGroup = group;
+          this.setFieldGroupData(group);
+        } else {
+          this.selectedGroup = null;
+          this.form.reset();
+          this.renderedFields = [];
+        }
       }
-    });
+    );
   }
 
   initializeForm(): void {
@@ -124,7 +126,7 @@ export class MiddlePaneComponent implements OnInit {
       type: droppedField.type || 'text',
       options: droppedField.options || [],
       placeholder: droppedField.placeholder || '',
-      value: droppedField.value || ''
+      value: droppedField.value || '',
     };
 
     // Simulate processing delay (the loader will display)
@@ -192,7 +194,9 @@ export class MiddlePaneComponent implements OnInit {
 
   onFieldUpdated(updatedField: FormElement): void {
     // Find and update the field in the renderedFields array.
-    const index = this.renderedFields.findIndex(field => field.id === updatedField.id);
+    const index = this.renderedFields.findIndex(
+      (field) => field.id === updatedField.id
+    );
     if (index !== -1) {
       this.renderedFields[index] = updatedField;
       // Optionally update in local storage.
@@ -210,7 +214,11 @@ export class MiddlePaneComponent implements OnInit {
   }
 
   get isSaveDisabled(): boolean {
-    return !(this.isHeaderSaved && this.renderedFields.length >= 2 && this.isRightDrawerSaved);
+    return !(
+      this.isHeaderSaved &&
+      this.renderedFields.length >= 2 &&
+      this.isRightDrawerSaved
+    );
   }
 
   get isPreviewDisabled(): boolean {
@@ -274,6 +282,12 @@ export class MiddlePaneComponent implements OnInit {
   }
 
   importForm(event: any): void {
+    const userConfirmed = window.confirm(
+      'Do you want to import a form? This will clear existing data.'
+    );
+
+    if (!userConfirmed) return;
+
     const file = event.target.files[0];
     if (!file) return;
 
@@ -281,19 +295,21 @@ export class MiddlePaneComponent implements OnInit {
     reader.onload = (e) => {
       try {
         const data = JSON.parse(e.target?.result as string);
+
         this.clearForm();
 
         if (data.fieldGroups && data.fieldGroups.length) {
           this.fieldGroups.push(
             this.fb.group({
-              title: [data.fieldGroups[0].title],
-              description: [data.fieldGroups[0].description],
+              title: [data.fieldGroups[0]?.title || 'Untitled Form'],
+              description: [
+                data.fieldGroups[0]?.description || 'No Description Available',
+              ],
             })
           );
         }
 
         this.renderedFields = data.formFields || [];
-
         const formFieldsArray = this.renderedFields.map((field) =>
           this.fb.group({
             id: [field.id],
@@ -304,9 +320,10 @@ export class MiddlePaneComponent implements OnInit {
             value: [field.value || ''],
           })
         );
+
         this.form.setControl('formFields', this.fb.array(formFieldsArray));
       } catch (err) {
-        alert('Invalid JSON');
+        alert('Invalid JSON format. Please try again.');
       }
     };
 

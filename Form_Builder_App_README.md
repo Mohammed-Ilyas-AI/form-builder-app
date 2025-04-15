@@ -75,6 +75,10 @@ ng build --prod
 ```
 After building, deploy the contents of the `/dist` folder to any static web server.
 
+### 🌐 Live Version
+
+ https://tangerine-buttercream-c6ceed.netlify.app
+
 ### 📝 Contribution
 We welcome contributions! If you’d like to enhance the project:
 1. Fork the repository.
