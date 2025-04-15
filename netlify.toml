@@ -1,0 +1,14 @@
+[build]
+  command = "ng build --output-path=dist --base-href=./"
+  publish = "dist"
+
+[dev]
+  command = "ng serve"
+  port = 4200
+  targetPort = 4200
+  framework = "#custom"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
